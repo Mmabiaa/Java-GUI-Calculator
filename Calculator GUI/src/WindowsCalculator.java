@@ -7,6 +7,7 @@ public class WindowsCalculator extends JFrame implements ActionListener {
     private JTextField display;
     private String operator;
     private double firstOperand;
+    private double secondOperand;
 
     public WindowsCalculator() {
         // Set up the frame
@@ -72,32 +73,42 @@ public class WindowsCalculator extends JFrame implements ActionListener {
             operator = "";
             firstOperand = 0;
         } else if (command.equals("=")) {
-            double secondOperand = Double.parseDouble(display.getText());
-            switch (operator) {
-                case "+":
-                    display.setText(String.valueOf(firstOperand + secondOperand));
-                    break;
-                case "-":
-                    display.setText(String.valueOf(firstOperand - secondOperand));
-                    break;
-                case "*":
-                    display.setText(String.valueOf(firstOperand * secondOperand));
-                    break;
-                case "/":
-                    display.setText(String.valueOf(firstOperand / secondOperand));
-                    break;
+            if (operator != null && !operator.isEmpty()) {
+                secondOperand = Double.parseDouble(display.getText());
+                switch (operator) {
+                    case "+":
+                        display.setText(String.valueOf(firstOperand + secondOperand));
+                        break;
+                    case "-":
+                        display.setText(String.valueOf(firstOperand - secondOperand));
+                        break;
+                    case "*":
+                        display.setText(String.valueOf(firstOperand * secondOperand));
+                        break;
+                    case "/":
+                        if (secondOperand != 0) {
+                            display.setText(String.valueOf(firstOperand / secondOperand));
+                        } else {
+                            display.setText("Error: Division by zero");
+                        }
+                        break;
+                }
+                operator = "";
+            } else {
+                // Handle the case when operator is null or empty
+                JOptionPane.showMessageDialog(this, "Please enter an operator first.");
             }
-            operator = "";
         } else if (command.equals("MC") || command.equals("MR") || command.equals("MS") || command.equals("M+")) {
             // Implement memory operations here
             System.out.println("Memory operation: " + command);
         } else {
-            if (!operator.isEmpty()) return; // Prevent multiple operators
+            if (operator != null && !operator.isEmpty()) return; // Prevent multiple operators
             firstOperand = Double.parseDouble(display.getText());
             operator = command;
             display.setText("");
         }
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
