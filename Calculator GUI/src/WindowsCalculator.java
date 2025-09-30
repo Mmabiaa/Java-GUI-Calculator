@@ -34,6 +34,9 @@ public class WindowsCalculator extends JFrame implements ActionListener {
                 "0", "C", "=", "+"
         };
 
+        //Prevents NullPointerException when checking for multiple operators on first operation 
+        operator = ""; 
+
         for (String text : buttons) {
             JButton button = new JButton(text);
             button.addActionListener(this);
